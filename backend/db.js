@@ -16,8 +16,8 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   ssl: {
-    ca: fs.readFileSync('./ca.pem')
-  }
+  ca: process.env.DB_CA
+}
 });
 
 // Test the connection when server starts
