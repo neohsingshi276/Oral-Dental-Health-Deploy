@@ -1,9 +1,4 @@
-// ============================================
-// db.js — MySQL Connection Pool
-// ============================================
-
 const mysql = require('mysql2/promise');
-const fs = require('fs');
 require('dotenv').config();
 
 const pool = mysql.createPool({
@@ -12,12 +7,12 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: process.env.DB_PORT || 3306,
+  ssl: {
+    rejectUnauthorized: true
+  },
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0,
-  ssl: {
-  ca: process.env.DB_CA
-}
+  queueLimit: 0
 });
 
 // Test the connection when server starts
