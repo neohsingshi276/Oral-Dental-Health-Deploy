@@ -13,29 +13,36 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import AdminRegisterPage from './pages/AdminRegisterPage';
 import NotFoundPage from './pages/NotFoundPage';
 
+const MODE = import.meta.env.VITE_APP_MODE || 'student';
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* ── Student Routes ── */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/learning" element={<LearningPage />} />
-          <Route path="/did-you-know" element={<DidYouKnowPage />} />
-          <Route path="/join" element={<JoinGamePage />} />
-          <Route path="/join/:code" element={<JoinGamePage />} />
-          <Route path="/game/:token" element={<GamePage />} />
+          {MODE === 'student' && (
+            <>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/learning" element={<LearningPage />} />
+              <Route path="/did-you-know" element={<DidYouKnowPage />} />
+              <Route path="/join" element={<JoinGamePage />} />
+              <Route path="/join/:code" element={<JoinGamePage />} />
+              <Route path="/game/:token" element={<GamePage />} />
+            </>
+          )}
 
-          {/* ── Admin Routes — hidden from students ── */}
-          {/* Access via: /admin/login (not linked anywhere on student pages) */}
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/admin/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/admin/dashboard" element={
-            <ProtectedRoute><AdminDashboard /></ProtectedRoute>
-          } />
-          <Route path="/admin/register" element={<AdminRegisterPage />} />
+          {MODE === 'admin' && (
+            <>
+              <Route path="/" element={<AdminLoginPage />} />
+              <Route path="/admin/login" element={<AdminLoginPage />} />
+              <Route path="/admin/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/admin/dashboard" element={
+                <ProtectedRoute><AdminDashboard /></ProtectedRoute>
+              } />
+              <Route path="/admin/register" element={<AdminRegisterPage />} />
+            </>
+          )}
 
-          {/* ── Catch-all 404 ── */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
